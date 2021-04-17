@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: headless       # đặt tên Service
+spec:
+  clusterIP: None      # Thiết lập là Headless Svc
+  selector:
+    app: headless      # Các nhãn của POD nó quản lý
+  ports:
+    - protocol: TCP
+      port: 80         # Cổng Service
+      targetPort: 80   # Cổng POD (container, endpoints)
