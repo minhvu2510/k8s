@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # tên của deployment
+  name: deployapp
+spec:
+  # số POD tạo ra
+  replicas: 3
+
+  # thiết lập các POD do deploy quản lý, là POD có nhãn  "app=deployapp"
+  selector:
+    matchLabels:
+      app: deployapp
+
+  # Định nghĩa mẫu POD, khi cần Deploy sử dụng mẫu này để tạo Pod
+  template:
+    metadata:
+      name: podapp
+      labels:
+        app: deployapp
+    spec:
+      containers:
+      - name: node
+        image: ichte/swarmtest:node
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 8085
