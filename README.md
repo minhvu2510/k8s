@@ -257,15 +257,111 @@ Deploy này quản sinh ra một ReplicasSet và quản lý nó, gõ lệnh sau 
 
 ![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115338387-ed34e880-a1cc-11eb-939c-605efffd20ce.png)
 
-#### 5. Service, Secret
-
-
 ##### Scale Deployment
 Scale thay đổi chỉ số replica (số lượng POD) của Deployment, ý nghĩa tương tự như scale đối với ReplicaSet trong phần trước. Ví dụ để scale với 10 POD thực hiện lệnh:
 >kubectl scale deploy/deployapp --replicas=10
 
 Muốn thiết lập scale tự động với số lượng POD trong khoảng min, max và thực hiện scale khi CPU của POD hoạt động ở mức 50% thì thực hiện
 >kubectl autoscale deploy/deployapp --min=2 --max=5 --cpu-percent=50
+
+#### 6. Service, Secret
+
+Mặc dù mỗi POD khi tạo ra nó có một IP để liên lạc, tuy nhiên vấn đề là mỗi khi POD thay thế thì là một IP khác, nên các dịch vụ truy cập không biết IP mới nếu ta cấu hình nó truy cập đến POD nào đó cố định. Để giải quết vấn đề này sẽ cần đến Service.
+
+Service (micro-service) là một đối tượng trừu tượng nó xác định ra một nhóm các POD và chính sách để truy cập đến POD đó. Nhóm cá POD mà Service xác định thường dùng kỹ thuật Selector (chọn các POD thuộc về Service theo label của POD).
+
+Cũng có thể hiểu Service là một dịch vụ mạng, tạo cơ chế cân bằng tải (load balancing) truy cập đến các điểm cuối (thường là các Pod) mà Service đó phục vụ.
+
+###### Tạo Service có Selector, chọn các Pod là Endpoint của Service
+pods.yaml
+```markdown
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp1
+  labels:
+    app: app1
+spec:
+  containers:
+  - name: n1
+    image: nginx
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+    ports:
+      - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp2
+  labels:
+    app: app1
+spec:
+  containers:
+  - name: n1
+    image: httpd
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+    ports:
+      - containerPort: 80
+```
+
+Triển khai file trên
+>kubectl apply -f 3.pods.yaml
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115355999-6a6c5780-a1e5-11eb-8dff-76fd3928e964.png)
+
+Tiếp tục tạo ra service có tên svc2 có thêm thiết lập selector chọn nhãn app=app1
+
+svc2.yaml
+```markdown
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc2
+spec:
+  selector:
+     app: app1
+  type: ClusterIP
+  ports:
+    - name: port1
+      port: 80
+      targetPort: 80
+```
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115359594-06e42900-a1e9-11eb-9d34-6436c831b908.png)
+Thông tin trên ta có, endpoint của svc2 là 192.168.201.4:80,192.168.74.197:80, hai IP này tương ứng là của 2 POD trên. Khi truy cập địa chỉ svc2:80 hoặc 10.101.4.19:80 thì căn bằng tải hoạt động sẽ là truy cập đến 192.168.201.4:80 hoặc 192.168.74.197:80
+
+###### Tạo Service kiểu NodePort
+
+Kiểu NodePort này tạo ra có thể truy cập từ ngoài internet bằng IP của các Node, ví dụ sửa dịch vụ svc2 trên thành dịch vụ svc3 kiểu NodePort
+svc3.yaml
+```markdown
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc3
+spec:
+  selector:
+     app: app1
+  type: NodePort
+  ports:
+    - name: port1
+      port: 80
+      targetPort: 80
+      nodePort: 31080
+```
+Triển khai file trên
+>kubectl appy -f 5.svc3.yaml
+
+Sau khi triển khai có thể truy cập với IP là địa chỉ IP của các Node và cổng là 31080
+![image](https://user-images.githubusercontent.com/36092539/115361055-6858c780-a1ea-11eb-9307-54babb33ccea.png)
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115360603-f97b6e80-a1e9-11eb-8941-6087655a1293.png)
 
 ### Jekyll Themes
 
