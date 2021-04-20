@@ -11,7 +11,8 @@
 10. Sử dụng Ingress trong Kubernetes
 
 Tham khảo các file config tại source [link](https://github.com/minhvu2510/k8s)
-Linh web [https://minhvu2510.github.io/k8s/](https://github.com/minhvu2510/k8s)
+
+Linh web [https://minhvu2510.github.io/k8s/](https://minhvu2510.github.io/k8s/)
 
 #### 1. Cài đặt k8s
 Kubernetes (còn gọi là k8s) là một hệ thống để chạy, quản lý, điều phối các ứng dụng được container hóa trên một cụm máy (1 hay nhiều) gọi là cluster.
