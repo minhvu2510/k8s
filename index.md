@@ -48,6 +48,7 @@ Chạy lệnh được sinh ra trên các cụm worker.
 ![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115220638-fc675800-a132-11eb-950a-19ce87edd8e3.png)
 
 Kết quả thu được
+
 ![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115220808-32a4d780-a133-11eb-8652-0d06b6148742.png)
 
 Hoàn thành cài đặt cụm k8s với 1 master, 2 node
@@ -66,6 +67,27 @@ Tải source k9s tại trang chủ chạy lênh sau để khởi chạy
 Gõ help để xem các phím tắt thao tác với k9s
 
 #### 3. Pod, Node, Kubectl
+
+##### 1.Node trong Kubernetes
+Trong Kubernetes Node là đơn vị nhỏ nhất xét về phần cứng. Nó là một máy vật lý hay máy ảo (VPS) trong cụm máy (cluster). Xem các nút (node) trong cụm (cluster) chạy lệnh:
+Mở k9s gõ:
+> Shift :
+
+Sau đó gõ tài nguyên node
+> node
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115326455-7fca8d00-a1b7-11eb-9946-e7f95f40d45f.png)
+##### 2.Pods trong Kubernetes
+
+Kubernetes không chạy các container một cách trực tiếp, thay vào đó nó bọc một hoặc vài container vào với nhau trong một cấu trúc gọi là POD. Các container cùng một pod thì chia sẻ với nhau tài nguyên và mạng cục bộ của pod.
+
+Xem các pod bằng lệnh pod trong k9s
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115327071-8574a280-a1b8-11eb-834c-013b8d5f6f73.png)
+
+Tạo Pod từ file cấu hình .yaml
+
+##### 3.Node trong Kubernetes
+
 ```markdown
 Syntax highlighted code block
 
