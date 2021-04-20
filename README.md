@@ -131,26 +131,141 @@ Chú ý, nếu pod có nhiều container bên trong, thì cần chỉ rõ thi h�
 >kubectl delete -f firstpod.yaml
 
 #### 4. ReplicaSet, HPA
+ReplicaSet là một điều khiển Controller - nó đảm bảo ổn định các nhân bản (số lượng và tình trạng của POD, replica) khi đang chạy.
 
+Ví dụ: Cấu hình sau định nghĩa một ReplicaSet đặt tên là rsapp, nó quản lý nhân bản 3 POD có nhãn app=rsapp, POD có một container từ image ichte/swarmtest:node
+
+2.rs.yaml
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rsapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rsapp
+  template:
+    metadata:
+      name: rsapp
+      labels:
+        app: rsapp
+    spec:
+      containers:
+      - name: app
+        image: ichte/swarmtest:node
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 8085
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Thực hiện lệnh để triển khai/cập nhật
+
+>kubectl apply -f 2.rs.yaml
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115337150-ab0aa780-a1ca-11eb-8300-ecec8c0d4906.png)
+
+Để lấy các ReplicaSet thực hiện lệnh
+>kubectl get rs
+
+Thông tin về ReplicaSet có tên rsapp
+>kubectl describe rs/rsapp
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115337341-ffae2280-a1ca-11eb-9a76-1b62b091c9a4.png)
+
+Liệt kê các POD có nhãn "app=rsapp"
+>kubectl get po -l "app=rsapp"
+
+###### Horizontal Pod Autoscaler với ReplicaSet
+Horizontal Pod Autoscaler là chế độ tự động scale (nhân bản POD) dựa vào mức độ hoạt động của CPU đối với POD, nếu một POD quá tải - nó có thể nhân bản thêm POD khác và ngược lại - số nhân bản dao động trong khoảng min, max cấu hình
+
+Ví dụ, với ReplicaSet rsapp trên đang thực hiện nhân bản có định 3 POD (replicas), nếu muốn có thể tạo ra một HPA để tự động scale (tăng giảm POD) theo mức độ đang làm việc CPU, có thể dùng lệnh sau:
+> kubectl autoscale rs rsapp --max=2 --min=1
+
+Để linh loạt và quy chuẩn, nên tạo ra HPA (HorizontalPodAutoscaler) từ cấu hình file yaml (Tham khảo HPA API ) , ví dụ:
+```markdown
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rsapp-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: ReplicaSet
+    name: rsapp
+  minReplicas: 5
+  maxReplicas: 10
+  # Thực hiện scale CPU hoạt động ở 50% so với CPU mà POD yêu cầu
+  targetCPUUtilizationPercentage: 50
+```
+
+#### 5. Deployment
+Deployment quản lý một nhóm các Pod - các Pod được nhân bản, nó tự động thay thế các Pod bị lỗi, không phản hồi bằng pod mới nó tạo ra. Như vậy, deployment đảm bảo ứng dụng của bạn có một (hay nhiều) Pod để phục vụ các yêu cầu.
+
+Deployment sử dụng mẫu Pod (Pod template - chứa định nghĩa / thiết lập về Pod) để tạo các Pod (các nhân bản replica), khi template này thay đổi, các Pod mới sẽ được tạo để thay thế Pod cũ ngay lập tức.
+
+Tạo file cấu hình Deployment (yaml) tham khảo API - Deployment API
+
+Ví dụ khai báo file Deployment sau
+
+1.myapp-deploy.yaml
+```markdown
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # tên của deployment
+  name: deployapp
+spec:
+  # số POD tạo ra
+  replicas: 3
+
+  # thiết lập các POD do deploy quản lý, là POD có nhãn  "app=deployapp"
+  selector:
+    matchLabels:
+      app: deployapp
+
+  # Định nghĩa mẫu POD, khi cần Deploy sử dụng mẫu này để tạo Pod
+  template:
+    metadata:
+      name: podapp
+      labels:
+        app: deployapp
+    spec:
+      containers:
+      - name: node
+        image: ichte/swarmtest:node
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 8085
+```
+
+Thực hiện lệnh sau để triển khai
+> kubectl apply -f 1.myapp-deploy.yaml
+
+Khi Deployment tạo ra, tên của nó là deployapp, có thể kiểm tra với lệnh:
+>kubectl get deploy -o wide
+
+Deploy này quản sinh ra một ReplicasSet và quản lý nó, gõ lệnh sau để hiện thị các ReplicaSet
+>kubectl get rs -o wide
+
+![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115338387-ed34e880-a1cc-11eb-939c-605efffd20ce.png)
+
+#### 5. Service, Secret
+
+
+##### Scale Deployment
+Scale thay đổi chỉ số replica (số lượng POD) của Deployment, ý nghĩa tương tự như scale đối với ReplicaSet trong phần trước. Ví dụ để scale với 10 POD thực hiện lệnh:
+>kubectl scale deploy/deployapp --replicas=10
+
+Muốn thiết lập scale tự động với số lượng POD trong khoảng min, max và thực hiện scale khi CPU của POD hoạt động ở mức 50% thì thực hiện
+>kubectl autoscale deploy/deployapp --min=2 --max=5 --cpu-percent=50
 
 ### Jekyll Themes
 
@@ -159,3 +274,4 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+
