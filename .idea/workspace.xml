@@ -1,8 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b7cb4a81-70fa-4665-93fe-7a2cab3bd2d2" name="Default" comment="">
+    <list default="true" id="b7cb4a81-70fa-4665-93fe-7a2cab3bd2d2" name="Default" comment="Add: add tt service k8s">
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/appprotect.f5.com_aplogconfs.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/appprotect.f5.com_appolicies.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/appprotect.f5.com_apusersigs.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/k8s.nginx.org_globalconfigurations.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/k8s.nginx.org_policies.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/k8s.nginx.org_transportservers.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/k8s.nginx.org_virtualserverroutes.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/crds/k8s.nginx.org_virtualservers.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/default-server-secret.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/ingress-class.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/nginx-config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/common/ns-and-sa.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/daemon-set/nginx-ingress.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/daemon-set/nginx-plus-ingress.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/deployment/nginx-ingress.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/deployment/nginx-plus-ingress.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/.helmignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/Chart.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/chart-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/appprotect.f5.com_aplogconfs.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/appprotect.f5.com_appolicies.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/appprotect.f5.com_apusersigs.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/k8s.nginx.org_globalconfigurations.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/k8s.nginx.org_policies.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/k8s.nginx.org_transportservers.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/k8s.nginx.org_virtualserverroutes.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/crds/k8s.nginx.org_virtualservers.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/NOTES.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/_helpers.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-configmap.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-daemonset.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-globalconfiguration.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-ingress-class.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-leader-election-configmap.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-secret.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-service.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-serviceaccount.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/controller-wildcard-secret.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/templates/rbac.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/values-icp.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/values-plus.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/helm-chart/values.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/rbac/ap-rbac.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/rbac/rbac.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/service/loadbalancer-aws-elb.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/service/loadbalancer.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exams/ingress_deployments/service/nodeport.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exams/pvc/3-httpd.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/exams/pvc/3-httpd.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -13,17 +65,38 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="557">
-                <caret line="260" lean-forward="true" selection-start-line="260" selection-end-line="260" />
+              <first_editor relative-caret-position="617">
+                <caret line="567" column="3" selection-start-line="567" selection-start-column="3" selection-end-line="567" selection-end-column="3" />
               </first_editor>
               <second_editor />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/exams/ingress_deployments/rbac/rbac.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-180" />
           </provider>
         </entry>
       </file>
@@ -58,6 +131,17 @@
               <item name="k8s" type="b2602c69:ProjectViewProjectNode" />
               <item name="k8s" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="k8s" type="b2602c69:ProjectViewProjectNode" />
+              <item name="k8s" type="462c0819:PsiDirectoryNode" />
+              <item name="exams" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="k8s" type="b2602c69:ProjectViewProjectNode" />
+              <item name="k8s" type="462c0819:PsiDirectoryNode" />
+              <item name="exams" type="462c0819:PsiDirectoryNode" />
+              <item name="ingress_deployments" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -70,6 +154,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/exams" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -96,12 +185,36 @@
       <workItem from="1618823309922" duration="44000" />
       <workItem from="1618823371541" duration="44000" />
       <workItem from="1618823425297" duration="8597000" />
-      <workItem from="1618889554940" duration="3585000" />
+      <workItem from="1618889554940" duration="11109000" />
     </task>
+    <task id="LOCAL-00001" summary="Add: add tt deployment k8s">
+      <created>1618894044047</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1618894044047</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add: add tt service k8s">
+      <created>1618906715244</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618906715244</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12270000" />
+    <option name="totallyTimeSpent" value="19794000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="47" y="25" width="1873" height="1055" extended-state="6" />
@@ -116,11 +229,11 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32937366" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32937366" />
       <window_info anchor="bottom" id="Log Viewer" order="11" />
       <window_info anchor="bottom" id="SOQL Query" order="12" />
       <window_info anchor="bottom" id="Anonymous Apex" order="13" />
@@ -130,7 +243,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Database" order="4" side_tool="true" weight="0.32950193" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12588944" />
@@ -162,14 +275,24 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add: add tt deployment k8s" />
+    <MESSAGE value="Add: add tt service k8s" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add: add tt service k8s" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/_config.yml" />
     <entry file="file://$PROJECT_DIR$/index.md" />
+    <entry file="file://$PROJECT_DIR$/exams/ingress_deployments/rbac/rbac.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-180" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="557">
-            <caret line="260" lean-forward="true" selection-start-line="260" selection-end-line="260" />
+          <first_editor relative-caret-position="617">
+            <caret line="567" column="3" selection-start-line="567" selection-start-column="3" selection-end-line="567" selection-end-column="3" />
           </first_editor>
           <second_editor />
         </state>

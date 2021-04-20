@@ -5,11 +5,10 @@
 4. ReplicaSet, HPA
 5. Deployment
 6. Service, Secret
-7. Service headlees
-8. DaemonSet Job và CronJob trong Kubernetes
-9. Pv, pvc
-10. PersistentVolume NFS trên Kubernetes
-11. Sử dụng Ingress trong Kubernetes
+7. DaemonSet Job và CronJob trong Kubernetes
+8. Pv, pvc
+9. PersistentVolume NFS trên Kubernetes
+10. Sử dụng Ingress trong Kubernetes
 
 Tham khảo các file config tại source [link](https://github.com/minhvu2510/k8s)
 
@@ -363,11 +362,216 @@ Sau khi triển khai có thể truy cập với IP là địa chỉ IP của cá
 
 ![Tux, the Linux mascot](https://user-images.githubusercontent.com/36092539/115360603-f97b6e80-a1e9-11eb-8941-6087655a1293.png)
 
-### Jekyll Themes
+#### 7. PersistentVolume NFS trên Kubernetes
+DaemonSet (ds) đảm bảo chạy trên mỗi NODE một bản copy của POD. Triển khai DaemonSet khi cần ở mỗi máy (Node) một POD, thường dùng cho các ứng dụng như thu thập log, tạo ổ đĩa trên mỗi Node
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/minhvu2510/k8s/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Job (jobs) có chức năng tạo các POD đảm bảo nó chạy và kết thúc thành công. Khi các POD do Job tạo ra chạy và kết thúc thành công thì Job đó hoàn thành. Khi bạn xóa Job thì các Pod nó tạo cũng xóa theo. Một Job có thể tạo các Pod chạy tuần tự hoặc song song. Sử dụng Job khi muốn thi hành một vài chức năng hoàn thành xong thì dừng lại (ví dụ backup, kiểm tra ...)
 
-### Support or Contact
+CronJob (cj) - chạy các Job theo một lịch định sẵn. Việc lên lịch cho CronJob khai báo giống Cron của Linux.
+
+#### 8. Pv, pvc
+Tạo ổ đĩa lưu dữ liệu lâu dài PV và yêu cầu truy cập đến PV bằng PVC, cách mount PVC vào POD
+
+PersistentVolume (pv) là một phần không gian lưu trữ dữ liệu tronnng cluster, các PersistentVolume giống với Volume bình thường tuy nhiên nó tồn tại độc lập với POD (pod bị xóa PV vẫn tồn tại), có nhiều loại PersistentVolume có thể triển khai như NFS, Clusterfs ...
+
+PersistentVolumeClaim (pvc) là yêu cầu sử dụng không gian lưu trữ (sử dụng PV). Hình dung PV giống như Node, PVC giống như POD. POD chạy nó sử dụng các tài nguyên của NODE, PVC hoạt động nó sử dụng tài nguyên của PV
+
+Tạo 1 pv
+```markdown
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv1
+  labels:
+    name: pv1
+spec:
+  storageClassName: mystorageclass
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/v1"
+```
+
+Tạo 1 pvc
+```markdown
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc1
+  labels:
+    name: pvc1
+spec:
+  storageClassName: mystorageclass
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 150Mi
+```
+
+Sử dụng PVC với Pod
+
+```markdown
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      name: myapp
+  template:
+    metadata:
+      name: myapp
+      labels:
+        name: myapp
+    spec:
+      volumes:
+      # Khai báo VL sử dụng PVC
+      - name: myvolume
+        persistentVolumeClaim:
+          claimName: pvc1
+      containers:
+      - name: myapp
+        image: busybox
+        resources:
+          limits:
+            memory: "50Mi"
+            cpu: "500m"
+        command:
+          - sleep
+          - "600"
+        volumeMounts:
+        - mountPath: "/data"
+          name: myvolume
+```
+
+#### 9. PersistentVolume NFS trên Kubernetes
+Cài đặt NFS làm Server chia sẻ file (Kubernetes)
+
+Tạo PersistentVolume NFS
+pv-nfs.yaml
+```markdown
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv1
+spec:
+  storageClassName: mystorageclass
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: "/data/mydata/"
+    server: "10.5.22.109"
+```
+
+Triển khai và kiểm tra
+>kubectl apply -f pv-nfs.yaml
+
+>kubectl get pv -o wide
+
+>kubectl describe pv/pv1
+
+![image](https://user-images.githubusercontent.com/36092539/115368907-c0df9300-a1f1-11eb-96cc-d37c25bfdbe6.png)
+
+Tạo PersistentVolumeClaim NFS
+pvc-nfs.yaml
+```markdown
+apiVersion: v1
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc1
+spec:
+  storageClassName: mystorageclass
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+```
+Triển khai và kiểm tra
+> kubectl apply -f pvc-nfs.yaml
+
+> kubectl get pvc,pv -o wide
+
+![image](https://user-images.githubusercontent.com/36092539/115369222-187dfe80-a1f2-11eb-8462-b90b488d47d9.png)
+
+SSH vào máy master, vào thư mục chia sẻ /data/mydata tạo một file index.html với nội dung đơn giản, ví dụ:
+> <p>Mount PersistentVolumeClaim NFS vào Container ...</p>
+Tạo file triển khai, gồm có POD chạy http và dịch vụ kiểu NodePort, ánh xạ cổng host 31080 vào cổng 80 của POD
+
+httpd.yaml
+```markdown
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd
+  labels:
+    app: httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      volumes:
+        - name: htdocs
+          persistentVolumeClaim:
+            claimName: pvc1
+      containers:
+      - name: app
+        image: httpd
+        resources:
+          limits:
+            memory: "100M"
+            cpu: "100m"
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - mountPath: /usr/local/apache2/htdocs/
+            name: htdocs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd
+  labels:
+    run: httpd
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+    nodePort: 31080
+  selector:
+    app: httpd
+```
+
+Sau khi triển khai, truy cập từ một IP của các node và cổng 31080 thu được nội dung file index.html vừa tạo
+#### Sử dụng Ingress trong Kubernetes
+Triển khai và sử dụng NGINX Ingress Controller trong Kubernetes, ví dụ tạo Ingress chuyển hướng traffic http, https vào một dịch vụ trong Kubernetes
+
+###### Cài đặt NGINX Ingress Controller
+Các menifest (yaml) cần triển khai ở trong thư mục k8s/exams/ingress_deployments, hãy vào thư mục này.
+
+```markdown
+kubectl apply -f common/ns-and-sa.yaml
+kubectl apply -f common/default-server-secret.yaml
+kubectl apply -f common/nginx-config.yaml
+kubectl apply -f rbac/rbac.yaml
+kubectl apply -f daemon-set/nginx-ingress.yaml
+```
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 

@@ -44,6 +44,6 @@ spec:
     targetPort: 80
     protocol: TCP
     name: http
-    nodePort: 31081
+    nodePort: 31080
   selector:
     app: httpd
