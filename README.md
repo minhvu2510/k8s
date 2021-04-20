@@ -573,5 +573,75 @@ kubectl apply -f rbac/rbac.yaml
 kubectl apply -f daemon-set/nginx-ingress.yaml
 ```
 
+Kiểm tra daemonset và các pod của Nginx Ingress Controller
+```markdown
+kubectl get ds -n nginx-ingress
+kubectl get po -n nginx-ingress
+```
+
+tạo Ingress
+app-test.yaml
+```markdown
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-test-svc
+  namespace: nginx-ingress
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: http-test-app
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: http-test-svc
+  name: http-test-svc
+  namespace: nginx-ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: http-test-app
+  template:
+    metadata:
+      labels:
+        run: http-test-app
+    spec:
+      containers:
+      - image: httpd
+        imagePullPolicy: IfNotPresent
+        name: http
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+```
+
+app-test-ingress.yaml
+```markdown
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app
+  namespace: nginx-ingress
+spec:
+  rules:
+    # Tên miền truy cập
+  - host: testk8s.test
+    http:
+      paths:
+      - path: /
+        backend:
+          # dịch vụ phục vụ tương ứng với tên miền và path
+          serviceName: http-test-svc
+          servicePort: 80
+```
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 

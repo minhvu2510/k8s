@@ -17,7 +17,7 @@ spec:
     spec:
       serviceAccountName: nginx-ingress
       containers:
-      - image: nginx/nginx-ingress:1.11.0
+      - image: nginx
         imagePullPolicy: IfNotPresent
         name: nginx-ingress
         ports:
@@ -53,9 +53,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        args:
-          - -nginx-configmaps=$(POD_NAMESPACE)/nginx-config
-          - -default-server-tls-secret=$(POD_NAMESPACE)/default-server-secret
+        # args:
+          # - -nginx-configmaps=$(POD_NAMESPACE)/nginx-config
+          # - -default-server-tls-secret=$(POD_NAMESPACE)/default-server-secret
          #- -v=3 # Enables extensive logging. Useful for troubleshooting.
          #- -report-ingress-status
          #- -external-service=nginx-ingress
